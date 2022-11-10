@@ -16,13 +16,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(1)->create();
-
-        // Post::factory(10)->create();
-
         User::factory()->create([
             'name' => 'Thae Thae',
             'email' => 'thaethae@gmail.com',
+        ]);
+
+        Post::factory()->create([
+            'title' => 'Post One',
+            'image' => 'uploadPhoto/one.jpg',
+        ]);
+
+        Post::factory()->create([
+            'title' => 'Post Two',
+            'image' => 'uploadPhoto/two.jpg',
+        ]);
+
+        Post::factory()->create([
+            'title' => 'Post Three',
+            'image' => 'uploadPhoto/three.jpg',
+        ]);
+
+        Post::factory()->create([
+            'title' => 'Post Four',
+            'image' => 'uploadPhoto/four.jfif',
+        ]);
+
+        Post::factory()->create([
+            'title' => 'Post Five',
+            'image' => 'uploadPhoto/five.jfif',
+        ]);
+
+        Post::factory()->create([
+            'title' => 'Post Six',
+            'image' => 'uploadPhoto/six.jfif',
         ]);
     }
 }

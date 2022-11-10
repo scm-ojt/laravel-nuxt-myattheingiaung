@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-// use Illuminate\Contracts\Validation\Validator;
-// use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PostUpdateRequest extends FormRequest
 {
@@ -15,18 +13,10 @@ class PostUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        // return [
-        //     'title' => 'nullable',
-        //     'image' => 'nullable',
-        // ];
+        return [
+            'title' => 'required|String',
+            'image' => 'nullable',
+        ];
     }
 
-    // public function failedValidation(Validator $validator)
-    // {
-    //     throw new HttpResponseException(response()->json([
-    //         'success'   => false,
-    //         'message'   => 'Validation errors',
-    //         'data'      => $validator->errors()
-    //     ]));
-    // }
 }

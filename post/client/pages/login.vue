@@ -87,13 +87,17 @@ export default {
         .catch((error) => {
           if (error.response.status == 401) {
             this.error.message = "Email or Password don't match";
+            this.error.email = '';
+            this.error.password = '';
           }
-          if ((error.response.statur = 422)) {
-            this.error.email = error.response.data.errors.email[0];
-            this.error.password = error.response.data.errors.password[0];
+          if(error.response.status == 422){
+            this.error.message = "";
+            error.response.data.errors.email ? this.error.email = error.response.data.errors.email[0] : this.error.email='';
+            error.response.data.errors.password ? this.error.password = error.response.data.errors.password[0] : this.error.password='';
           }
         });
     },
   },
+  
 };
 </script>

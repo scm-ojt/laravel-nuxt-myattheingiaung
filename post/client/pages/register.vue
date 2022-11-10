@@ -53,9 +53,7 @@
                     v-html="this.error.password"
                   />
                 </b-form-group>
-
                 <b-button type="submit" variant="primary">Register</b-button>
-                <b-button to="/login">Login</b-button>
               </b-form>
             </b-card-body>
           </b-card>
@@ -83,12 +81,11 @@ export default {
     async register() {
       try {
         await this.$axios.post("http://localhost:8000/api/register", this.form);
-        this.$router.push("/login");
+        this.$router.push("/post");
       } catch (error) {
-        console.log(error);
-        this.error.name = error.response.data.errors.name[0];
-        this.error.email = error.response.data.errors.email[0];
-        this.error.password = error.response.data.errors.password[0];
+        error.response.data.errors.name ? this.error.name = error.response.data.errors.name[0] : this.error.name='';
+        error.response.data.errors.email ? this.error.email = error.response.data.errors.email[0] : this.error.email='';
+        error.response.data.errors.password ? this.error.password = error.response.data.errors.password[0] : this.error.password='';
       }
     },
   },

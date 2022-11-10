@@ -3,11 +3,7 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand to="/">Post</b-navbar-brand>
       <b-navbar-nav class="ml-auto">
-        <!-- <template>
-            <b-nav-item to="/">Home</b-nav-item>
-          </template> -->
         <template v-if="$auth.loggedIn">
-          <b-nav-item to="/dashboard">Dashboard</b-nav-item>
           <b-nav-item to="/post">Post</b-nav-item>
           <b-nav-item href="#" @click.prevent="logout()">Logout</b-nav-item>
         </template>

@@ -4,7 +4,11 @@
       <div class="row my-3">
         <div class="col-md-8 offset-4 d-flex justify-content-between">
           <div class="col-3">
-            <button class="btn btn-primary" @click="create">Create</button>
+            <div class=""  v-if="isEditMode">
+              <button class="btn btn-primary" @click="create">
+                Create
+              </button>
+            </div>
           </div>
           <div class="col-5">
             <form action="">
@@ -123,7 +127,8 @@
           </table>
         </div>
       </div>
-      <div class="row">
+
+      <div class="row"  v-if="this.count > 0">
         <div class="col-md-8 offset-4">
           <vs-pagination :total-pages="totalPages" @change="view"></vs-pagination>
         </div>
@@ -135,7 +140,18 @@
 import axios from "axios";
 import Form from "vform";
 import Swal from "sweetalert2";
-import VsPagination from "@vuesimple/vs-pagination";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+});
 
 export default {
   middleware: ["auth"],
@@ -145,7 +161,8 @@ export default {
       posts: {},
       photo: "",
       search: "",
-      totalPages: "",
+      count : 1,
+      totalPages: 0,
       error: {
         title: "",
         image: "",
@@ -164,7 +181,7 @@ export default {
         .then((response) => {
           this.posts = response.data;
           this.totalPages = response.data.last_page;
-          console.log(response.data.last_page);
+          this.count = response.data.total
         });
     },
     onFileSelected(event) {
@@ -183,15 +200,18 @@ export default {
         .post("http://127.0.0.1:8000/api/post")
         .then((response) => {
           this.view();
+          Toast.fire({
+              icon: 'success',
+              title: 'Deleted successfully!'
+          });
           this.post.id = "";
           this.post.title = "";
           this.$refs.file.value = null;
           this.post.image = "";
         })
         .catch((error) => {
-          this.error.title = error.response.data.errors.title[0];
-          this.error.image = error.response.data.errors.image[0];
-          console.log(error);
+          error.response.data.errors.title ? this.error.title = error.response.data.errors.title[0] : this.error.title= '';
+          error.response.data.errors.image ? this.error.image = error.response.data.errors.image[0] : this.error.image ="";
         });
     },
     edit(post) {
@@ -200,7 +220,6 @@ export default {
       this.post.title = post.title;
       this.post.image = post.image;
       this.photo = post.image;
-      this.$refs.file = post.image;
       this.error.title = "";
       this.error.image = "";
     },
@@ -209,17 +228,22 @@ export default {
         .post(`http://127.0.0.1:8000/api/post/${this.post.id}`)
         .then((response) => {
           this.view();
+          Toast.fire({
+              icon: 'success',
+              title: 'Updated successfully!'
+            });
           this.isEditMode = false;
           this.post.id = "";
           this.post.title = "";
           this.post.image = "";
           this.photo = "";
+          this.error.title = "";
+          this.error.image = "";
           this.$refs.file.value = null;
         })
         .catch((error) => {
-          this.error.title = error.response.data.errors.title[0];
-          this.error.image = error.response.data.errors.image[0];
-          console.log(error);
+          error.response.data.errors.title ? this.error.title = error.response.data.errors.title[0] : this.error.title= '';
+          error.response.data.errors.image ? this.error.image = error.response.data.errors.image[0] : this.error.image ="";
         });
     },
     destroy(id) {
@@ -237,6 +261,10 @@ export default {
             Swal.fire({
               title: "Deleted!",
               icon: "success",
+            });
+            Toast.fire({
+              icon: 'success',
+              title: 'Deleted successfully!'
             });
           });
         }
