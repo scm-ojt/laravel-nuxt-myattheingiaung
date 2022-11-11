@@ -83,7 +83,7 @@ export default {
         .loginWith("laravelSanctum", {
           data: this.form,
         })
-        .then((response) => console.log(response))
+        .then((response) => this.$router.push("/post"))
         .catch((error) => {
           if (error.response.status == 401) {
             this.error.message = "Email or Password don't match";

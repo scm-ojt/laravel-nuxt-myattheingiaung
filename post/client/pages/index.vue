@@ -1,121 +1,68 @@
-<!-- <template>
-  <b-container>
-    <b-row class="mt-4">
-      <b-col cols="6" class="mx-auto">
-        <b-card title="Public Home Page">
-          Welcome Home
-        </b-card>
-      </b-col>
-    </b-row>
-  </b-container>
-</template>
-
-<script>
-export default {
-  auth : false
-}
-</script> -->
 <template>
-  <div>
-    <b-container class="mt-4">
-      <b-row>
-        <b-col cols="6">
-          <b-card>
-            <b-card-header>
-              <h3>Login</h3>
-            </b-card-header>
-            <b-card-body>
-              <small
-                v-if="this.error.message"
-                class="text-danger font-weight-bolder"
-                v-html="this.error.message"
-              />
-              <b-form @submit.prevent="login" v-if="show">
-                <b-form-group
-                  id="input-group-1"
-                  label="Email address:"
-                  label-for="input-2"
-                >
-                  <b-form-input
-                    id="input-2"
-                    v-model="form.email"
-                    type="email"
-                    placeholder="Enter email"
-                  ></b-form-input>
-                  <small
-                    v-if="this.error.email"
-                    class="text-danger font-weight-bolder"
-                    v-html="this.error.email"
-                  />
-                </b-form-group>
-
-                <b-form-group
-                  id="input-group-1"
-                  label="Email address:"
-                  label-for="input-3"
-                >
-                  <b-form-input
-                    id="input-3"
-                    v-model="form.password"
-                    type="password"
-                    placeholder="Enter Password"
-                  ></b-form-input>
-                  <small
-                    v-if="this.error.password"
-                    class="text-danger font-weight-bolder"
-                    v-html="this.error.password"
-                  />
-                </b-form-group>
-
-                <b-button type="submit" variant="primary">Login</b-button>
-              </b-form>
-            </b-card-body>
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+    <div class="up">
+        <h2 class="title">
+          <span class="title-word title-word-1">Welcome</span>
+          <span class="title-word title-word-2">From</span>
+          <span class="title-word title-word-3">My</span>
+          <span class="title-word title-word-4">Website</span>
+        </h2>
+      </div>
 </template>
-
 <script>
-export default {
-  middleware: ["guest"],
-  data() {
-    return {
-      form: {
-        email: this.email,
-        password: this.password,
-      },
-      error: {
-        email: "",
-        password: "",
-        message: "",
-      },
-      show: true,
-    };
-  },
-  methods: {
-    login() {
-      this.$auth
-        .loginWith("laravelSanctum", {
-          data: this.form,
-        })
-        .then((response) => console.log(response))
-        .catch((error) => {
-          if (error.response.status == 401) {
-            this.error.message = "Email or Password don't match";
-            this.error.email = '';
-            this.error.password = '';
-          }
-          if(error.response.status == 422){
-            this.error.message = "";
-            error.response.data.errors.email ? this.error.email = error.response.data.errors.email[0] : this.error.email='';
-            error.response.data.errors.password ? this.error.password = error.response.data.errors.password[0] : this.error.password='';
-          }
-        });
-    },
-  },
-  
-};
 </script>
 
+<style>
+.title-word {
+    animation: color-animation 4s linear infinite;
+  }
+  
+  .title-word-1 {
+    --color-1: #DF8453;
+    --color-2: #3D8DAE;
+    --color-3: #E4A9A8;
+  }
+  
+  .title-word-2 {
+    --color-1: #DBAD4A;
+    --color-2: #ACCFCB;
+    --color-3: #17494D;
+  }
+  
+  .title-word-3 {
+    --color-1: #ACCFCB;
+    --color-2: #E4A9A8;
+    --color-3: #ACCFCB;
+  }
+  
+  .title-word-4 {
+    --color-1: #3D8DAE;
+    --color-2: #DF8453;
+    --color-3: #E4A9A8;
+  }
+  
+  @keyframes color-animation {
+    0%    {color: var(--color-1)}
+    32%   {color: var(--color-1)}
+    33%   {color: var(--color-2)}
+    65%   {color: var(--color-2)}
+    66%   {color: var(--color-3)}
+    99%   {color: var(--color-3)}
+    100%  {color: var(--color-1)}
+  }
+  
+  /* Here are just some visual styles. 🖌 */
+  
+  .up {
+    display: grid;
+    place-items: center;  
+    text-align: center;
+    height: 86vh;
+  }
+  
+  .title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: 8.5vw;
+    text-transform: uppercase;
+  }
+</style>

@@ -79,14 +79,19 @@ export default {
   },
   methods: {
     async register() {
-      try {
-        await this.$axios.post("http://localhost:8000/api/register", this.form);
-        this.$router.push("/post");
-      } catch (error) {
-        error.response.data.errors.name ? this.error.name = error.response.data.errors.name[0] : this.error.name='';
-        error.response.data.errors.email ? this.error.email = error.response.data.errors.email[0] : this.error.email='';
-        error.response.data.errors.password ? this.error.password = error.response.data.errors.password[0] : this.error.password='';
-      }
+        await this.$axios.post("http://localhost:8000/api/register", this.form)
+        .then((response) =>{
+          this.$router.push("/post")
+          this.$auth
+          .loginWith("laravelSanctum", {
+          data: this.form,
+          })
+        } )
+        .catch ((error)=>{
+          error.response.data.errors.name ? this.error.name = error.response.data.errors.name[0] : this.error.name='';
+          error.response.data.errors.email ? this.error.email = error.response.data.errors.email[0] : this.error.email='';
+          error.response.data.errors.password ? this.error.password = error.response.data.errors.password[0] : this.error.password='';
+        })
     },
   },
 };

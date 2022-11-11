@@ -33,15 +33,8 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/fontawesome'
   ],
 
-  fontaewsome :{
-    icons: {
-      solid : true,
-      brands : true,
-    }
-  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -51,12 +44,8 @@ export default {
     '@nuxtjs/auth-next',
   ],
 
-  // router:{
-  //   middleware: ['auth']
-  // },
-
   axios : {
-
+    baseURL:"http://localhost:8000/"
   },
 
   auth : {
@@ -83,6 +72,7 @@ export default {
     redirect:{
       login: '/login',
       logout: '/',
+      home : '/'
     }
   },
 

@@ -15,7 +15,7 @@ class PostUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|String',
-            'image' => 'nullable',
+            'image' => 'image',
         ];
     }
 

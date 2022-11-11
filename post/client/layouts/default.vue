@@ -1,7 +1,7 @@
 <template>
   <div class="pb-4">
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand to="/">Post</b-navbar-brand>
+      <b-navbar-brand>Post</b-navbar-brand>
       <b-navbar-nav class="ml-auto">
         <template v-if="$auth.loggedIn">
           <b-nav-item to="/post">Post</b-nav-item>

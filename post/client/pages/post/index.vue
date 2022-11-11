@@ -23,7 +23,7 @@
                   aria-describedby="basic-addon2"
                 />
                 <div class="input-group-append">
-                  <button @click.prevent="view" class="btn btn-primary" type="button">
+                  <button @click.prevent="view" :disabled="isDisable" class="btn btn-primary" type="button">
                     Search
                   </button>
                 </div>
@@ -60,7 +60,7 @@
                   <img
                     width="80px"
                     height="80px"
-                    :src="'http://localhost:8000/' + `${photo}`"
+                    :src="`${$axios.defaults.baseURL}` + `${photo}`"
                     class="img-fluid rounded border"
                     alt=""
                   />
@@ -92,16 +92,21 @@
           </div>
         </div>
         <div class="col-md-8">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
+          <table class="table">
+            <thead class="thead-light">
+              <tr class="my-4">
+                <th scope="col" class="py-3">#</th>
                 <th scope="col">Post Title</th>
                 <th scope="col">Image</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
-            <tbody v-for="post in posts.data" :key="post.id">
+            <tbody v-if="postsLength == 0">
+              <tr>
+                <td colspan="4" class="text-center">There is no record</td>
+              </tr>
+            </tbody>
+            <tbody v-else v-for="post in posts.data" :key="post.id">
               <tr>
                 <td>{{ post.id }}</td>
                 <td>{{ post.title }}</td>
@@ -110,7 +115,7 @@
                     width="60px"
                     height="60px"
                     class="img-fluid rounded border"
-                    :src="'http://localhost:8000/' + post.image"
+                    :src="`${$axios.defaults.baseURL}` + post.image"
                     alt=""
                   />
                 </td>
@@ -162,7 +167,8 @@ export default {
       photo: "",
       search: "",
       count : 1,
-      totalPages: 0,
+      totalPages: 1,
+      postsLength:1,
       error: {
         title: "",
         image: "",
@@ -176,10 +182,11 @@ export default {
   },
   methods: {
     async view(page = 1) {
-      axios
-        .get(`http://127.0.0.1:8000/api/post?page=${page}&search=${this.search}`)
+      this.$axios
+        .get(`api/post?page=${page}&search=${this.search}`)
         .then((response) => {
           this.posts = response.data;
+          this.postsLength = this.posts.data.length;
           this.totalPages = response.data.last_page;
           this.count = response.data.total
         });
@@ -196,18 +203,23 @@ export default {
       this.post.image = "";
     },
     store() {
-      this.post
-        .post("http://127.0.0.1:8000/api/post")
+      const data = new FormData();
+      data.append('title',this.post.title)
+      typeof this.post.image == 'object' ? data.append('image',this.post.image,this.post.image.name) : this.post.image = ''
+      this.$axios
+        .post(`api/post`,data)
         .then((response) => {
           this.view();
           Toast.fire({
               icon: 'success',
-              title: 'Deleted successfully!'
+              title: 'Created successfully!'
           });
           this.post.id = "";
           this.post.title = "";
           this.$refs.file.value = null;
           this.post.image = "";
+          this.error.title = "";
+          this.error.image = "";
         })
         .catch((error) => {
           error.response.data.errors.title ? this.error.title = error.response.data.errors.title[0] : this.error.title= '';
@@ -224,8 +236,11 @@ export default {
       this.error.image = "";
     },
     update() {
-      this.post
-        .post(`http://127.0.0.1:8000/api/post/${this.post.id}`)
+      const data = new FormData();
+      data.append('title',this.post.title)
+      typeof this.post.image == 'object' ? data.append('image',this.post.image,this.post.image.name) : this.post.image = ''
+      this.$axios
+        .post(`http://localhost:8000/api/post/${this.post.id}`,data)
         .then((response) => {
           this.view();
           Toast.fire({
@@ -256,12 +271,8 @@ export default {
         confirmButtonText: "Delete!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(`http://127.0.0.1:8000/api/post/${id}`).then((response) => {
+          this.$axios.delete(`api/post/${id}`).then((response) => {
             this.view();
-            Swal.fire({
-              title: "Deleted!",
-              icon: "success",
-            });
             Toast.fire({
               icon: 'success',
               title: 'Deleted successfully!'
@@ -269,6 +280,11 @@ export default {
           });
         }
       });
+    },
+  },
+  computed: {
+    isDisable() {
+      return this.search.length <= 0;
     },
   },
   created() {
