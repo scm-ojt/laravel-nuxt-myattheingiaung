@@ -72,6 +72,7 @@
                     ref="file"
                     id="file1"
                     name="image"
+                    accept="image/png, image/jpeg,image/jpg, image/jfif"
                     @change="onFileSelected"
                     class="form-control pt-1"
                   />
@@ -158,6 +159,7 @@ const Toast = Swal.mixin({
   }
 });
 
+
 export default {
   middleware: ["auth"],
   data() {
@@ -205,6 +207,7 @@ export default {
     store() {
       const data = new FormData();
       data.append('title',this.post.title)
+      this.sizeCheck(this.post.image)
       typeof this.post.image == 'object' ? data.append('image',this.post.image,this.post.image.name) : this.post.image = ''
       this.$axios
         .post(`api/post`,data)
@@ -231,13 +234,23 @@ export default {
       this.post.id = post.id;
       this.post.title = post.title;
       this.post.image = post.image;
+      this.$refs.file.value = null;
       this.photo = post.image;
       this.error.title = "";
       this.error.image = "";
     },
+    sizeCheck(image){
+      if(image.size > 1024){
+        if(this.post.title == ''){
+          this.error.title = "Title field is required";
+        }
+        this.error.image = "Image file size is too large";
+      }
+    },
     update() {
       const data = new FormData();
       data.append('title',this.post.title)
+      this.sizeCheck(this.post.image)
       typeof this.post.image == 'object' ? data.append('image',this.post.image,this.post.image.name) : this.post.image = ''
       this.$axios
         .post(`http://localhost:8000/api/post/${this.post.id}`,data)

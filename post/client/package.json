@@ -17,15 +17,12 @@
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.25.3",
     "laravel-vue": "^1.0.0",
-    "laravel-vue-pagination": "^4.0.0",
     "nuxt": "^2.15.8",
-    "pagination": "^0.4.6",
-    "sweetalert2": "^11.6.7",
-    "v-pagination-3": "^0.1.7",
+    "sweetalert2": "^11.6.8",
     "vform": "^2.1.2",
-    "vue": "^2.7.10",
-    "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.10"
+    "vue": "^2.7.14",
+    "vue-server-renderer": "^2.7.14",
+    "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
