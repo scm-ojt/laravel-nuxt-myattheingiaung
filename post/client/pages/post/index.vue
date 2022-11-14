@@ -61,6 +61,7 @@
                     width="80px"
                     height="80px"
                     :src="`${$axios.defaults.baseURL}` + `${photo}`"
+                    accept="image/png, image/jpeg, image/jpg, image/jfif"
                     class="img-fluid rounded border"
                     alt=""
                   />
@@ -72,7 +73,7 @@
                     ref="file"
                     id="file1"
                     name="image"
-                    accept="image/png, image/jpeg,image/jpg, image/jfif"
+                    
                     @change="onFileSelected"
                     class="form-control pt-1"
                   />
@@ -196,7 +197,6 @@ export default {
     onFileSelected(event) {
       this.post.image = event.target.files[0];
     },
-
     create() {
       this.isEditMode = false;
       this.post.id = "";
@@ -240,11 +240,11 @@ export default {
       this.error.image = "";
     },
     sizeCheck(image){
-      if(image.size > 1024){
-        if(this.post.title == ''){
-          this.error.title = "Title field is required";
-        }
+      if(image.size > 1024 * 1024){
+        this.post.title == '' ? this.error.title = "Title field is required!" : this.error.title = ''
         this.error.image = "Image file size is too large";
+      }else{
+        this.error.image = ''; 
       }
     },
     update() {
@@ -253,7 +253,7 @@ export default {
       this.sizeCheck(this.post.image)
       typeof this.post.image == 'object' ? data.append('image',this.post.image,this.post.image.name) : this.post.image = ''
       this.$axios
-        .post(`http://localhost:8000/api/post/${this.post.id}`,data)
+        .post(`api/post/${this.post.id}`,data)
         .then((response) => {
           this.view();
           Toast.fire({
