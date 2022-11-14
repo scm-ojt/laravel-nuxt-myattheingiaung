@@ -1,22 +1,33 @@
+
 # laravel-nuxt-myattheingiaung
 
 ## Git clone
 
 git clone https://github.com/scm-ojt/laravel-nuxt-myattheingiaung.git
 
-## Set-up
+## Laravel Set-up
 
+- cd api
 - copy env.example .env
 - env setup
 - create database 
-- npm install
 - composer install
 
-## Run
+## Nuxt Set-up
 
-- npm run dev
+- cd client
+- npm install
+
+## Laravel Run
+
+- cd api
 - php artisan serve
 - php artisan migrate
 - php artisan db:seed
+
+## Nuxt Run
+
+- cd client
+- npm run dev
 
 ![image](https://user-images.githubusercontent.com/114456411/201291346-d4956dfe-9cd2-4251-ac07-25d0fd381e7a.png)
